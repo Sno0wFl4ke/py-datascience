@@ -38,6 +38,8 @@ def k_means(k: int, points: np.ndarray):
         rand.append(x)
     centroids = points[rand]
     centerpoints = []
+    old_centerpoints = []
+    while centerpoints
     for point in points:
         i = 0
         for centroid in centroids:
@@ -48,7 +50,8 @@ def k_means(k: int, points: np.ndarray):
                 centerpoints[i] = centroid
         i += 1
             
-    
+def distance(a: np.ndarray, b: np.ndarray) -> float:
+    return np.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
     
 if __name__ == "__main__":
     
