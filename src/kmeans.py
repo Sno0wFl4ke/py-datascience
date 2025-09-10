@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 """
 This function generates N random points with the given mean and covariance.
@@ -66,4 +67,7 @@ if __name__ == "__main__":
     
     for i in array_points:
         plt.scatter(i[:,0],i[:,1])
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.title("Cluster")
     plt.show()
