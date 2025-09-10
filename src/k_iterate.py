@@ -3,6 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 #import src.sse as sse
 
+"""
+It runs k-means for different values of k (from 1 to k_max) and plots the SSE (sum of squared errors) for each k.
+"""
+
 def k_means_iterative(k_max:int ,points: np.ndarray):
     SSEs = []
     for i in range(1, k_max + 1):
