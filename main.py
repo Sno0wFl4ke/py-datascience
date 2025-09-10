@@ -55,14 +55,17 @@ def run():
 
 def run_n_times(N: int):
     sse_list = []
+    # array => kmeans[]
+    # map => sse_time + array[i]
+    # ==> Check -> lowest SSE => print
+    array_points = gen.N_clouds(3, 500, [[5.0, 5.0], [5.0, 0.0], [0.0, 5.0]],
+                          [[[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]]])
 
     for i in range(N):
-        points = gen.N_clouds(3, 500, [[5.0, 5.0], [5.0, 0.0], [0.0, 5.0]], [[[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]]])
-
-        label, centroids = km.k_means(10, points)
+        label, centroids, points = km.k_means(10, array_points)
 
         # build clusters: list of arrays, one per cluster
-        clusters = [points[label == i] for i in range(len(centroids))]
+        clusters = [array_points[label == i] for i in range(len(centroids))]
 
         sse_value = sse.sse(centroids, clusters)
         print(sse_value)
@@ -70,8 +73,6 @@ def run_n_times(N: int):
 
 
     print("Lowest SSE score:", min(sse_list))
-    print("Highest SSE score:", max(sse_list))
-    print("Average SSE score:", sum(sse_list) / len(sse_list))
 
 if __name__ == "__main__":
     run_n_times(10)

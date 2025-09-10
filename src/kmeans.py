@@ -1,15 +1,7 @@
 import numpy as np
 from . import utils
 
-"""
-Creates 3 clouds with 500 points each at random positions at the coordinates (5,5), (5,0) and (0,5). The covariance matrices are the same for each cloud.
-"""
-
 def k_means(k: int, points: np.ndarray):
-    
-    
-        
-    
     rand = []
     for i in range(k):
         x = np.random.randint(0,len(points))
@@ -46,4 +38,4 @@ def k_means(k: int, points: np.ndarray):
                 counter2 += 1
             i += 1
 
-    return centerpoints, centroids
+    return centerpoints, centroids, points[rand]
