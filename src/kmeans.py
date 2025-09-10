@@ -6,6 +6,10 @@ Creates 3 clouds with 500 points each at random positions at the coordinates (5,
 """
 
 def k_means(k: int, points: np.ndarray):
+    
+    
+        
+    
     rand = []
     for i in range(k):
         x = np.random.randint(0,len(points))
@@ -15,6 +19,8 @@ def k_means(k: int, points: np.ndarray):
     
     new_centroids = np.zeros_like(centroids)
     centerpoints = np.zeros(len(points), dtype=int)
+    if k == 1:
+        return centerpoints,np.mean(points, axis=0)
     
     while np.linalg.norm(new_centroids - centroids) > 0.1 or np.all(centerpoints == 0):
         if not np.all(centerpoints == 0):
@@ -22,8 +28,9 @@ def k_means(k: int, points: np.ndarray):
             counter = 0
             for i in centroids:
                 mask = centerpoints == counter
-                centroid = np.mean(points[mask], axis=0)
-                new_centroids[counter] = centroid
+                if np.any(mask):
+                    centroid = np.mean(points[mask], axis=0)
+                    new_centroids[counter] = centroid
                 counter += 1
         i = 0
         for point in points:
