@@ -23,14 +23,35 @@ def draw():
     plt.scatter(generate_data())
     plt.show()
     
-def N_clouds(N: int, n:int, my=np.array([0.0, 0.0]), covariance=np.array([[1.0, 0.0], [0.0, 1.0]])):
+def N_clouds(N: int, n:int, my=[], covariance=[]):
     all_points = []
     for i in range(N):
-        all_points.append(generate_data(my,covariance, n))
-    
+        all_points.append(generate_data(my[i],covariance[i], n))
+    return all_points
 
+array_points = N_clouds(3,500,[[5.0, 5.0],[5.0, 0.0],[0.0, 5.0]],[[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]]])
+
+def k_means(k: int, points: np.ndarray):
+    rand = []
+    for i in range(k):
+        x = np.random.randint(0,len(points))
+        rand.append(x)
+    centroids = points[rand]
+    centerpoints = []
+    for point in points:
+        i = 0
+        for centroid in centroids:
+            dist = np.sqrt((point[0]-centroid[0])**2 + (point[1]-centroid[1])**2)
+            
+            if dist < smalldist or smalldist is None:
+                smalldist = dist
+                centerpoints[i] = centroid
+        i += 1
+            
+    
+    
 if __name__ == "__main__":
-    array_points = N_clouds
+    
     for i in array_points:
-        plt.scatter(i[0],i[1])
+        plt.scatter(i[:,0],i[:,1])
     plt.show()
