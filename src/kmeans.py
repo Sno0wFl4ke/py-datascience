@@ -1,7 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+"""
+This function generates N random points with the given mean and covariance.
+Similar to the gaussian distribution.
+Math formula in TeX: p(x) = \frac{1}{\sigma\sqrt{2\pi}}exp(-\frac{(x-\mu)^2}{2\sigma^2})
+"""
 def generate_data(my=np.array([0.0, 0.0]), covariance=np.array([[1.0, 0.0], [0.0, 1.0]]), n=None) -> np.ndarray:
     # μ = mean, Σ = covariance
     mean = my  # n length 1D array_like /
@@ -13,22 +17,22 @@ def generate_data(my=np.array([0.0, 0.0]), covariance=np.array([[1.0, 0.0], [0.0
     return np.random.multivariate_normal(mean, cov, size=size, check_valid=check_valid, tol=tol)
 
 
-def is_diagonal_psd (matrix: np.ndarray) -> bool:
-    if not np.allclose(matrix, np.diag(np.diagonal(matrix))):
-        return False
-    return np.all(np.diagonal(matrix) >= 0)
-
-
-def draw():
-    plt.scatter(generate_data())
-    plt.show()
-    
-def N_clouds(N: int, n:int, my=[], covariance=[]):
+"""
+This function generates N random clouds of points with the given mean and covariance.
+N: number of clouds
+n: number of points per cloud
+mu μ: list of mean vectors
+covariance: list of covariance matrices
+"""
+def N_clouds(N: int, n:int, mu=[], covariance=[]):
     all_points = []
     for i in range(N):
-        all_points.append(generate_data(my[i],covariance[i], n))
+        all_points.append(generate_data(mu[i],covariance[i], n))
     return all_points
 
+"""
+Creates 3 clouds with 500 points each at random positions at the coordinates (5,5), (5,0) and (0,5). The covariance matrices are the same for each cloud.
+"""
 array_points = N_clouds(3,500,[[5.0, 5.0],[5.0, 0.0],[0.0, 5.0]],[[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]]])
 
 def k_means(k: int, points: np.ndarray):
@@ -39,7 +43,6 @@ def k_means(k: int, points: np.ndarray):
     centroids = points[rand]
     centerpoints = []
     old_centerpoints = []
-    while centerpoints
     for point in points:
         i = 0
         for centroid in centroids:
@@ -49,7 +52,13 @@ def k_means(k: int, points: np.ndarray):
                 smalldist = dist
                 centerpoints[i] = centroid
         i += 1
-            
+
+"""
+This functions calculates the Euclidean distance between two points.
+a: 1D array_like, shape (N,)
+b: 1D array_like, shape (N,)
+"""
+
 def distance(a: np.ndarray, b: np.ndarray) -> float:
     return np.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
     
