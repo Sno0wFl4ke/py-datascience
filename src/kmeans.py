@@ -41,4 +41,4 @@ def k_means(k: int, points: np.ndarray, starpointst=None):
                 counter2 += 1
             i += 1
 
-    return centerpoints, centroids, points[rand]
+    return centerpoints, centroids
