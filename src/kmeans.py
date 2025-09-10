@@ -34,6 +34,7 @@ def N_clouds(N: int, n:int, mu=[], covariance=[]):
 Creates 3 clouds with 500 points each at random positions at the coordinates (5,5), (5,0) and (0,5). The covariance matrices are the same for each cloud.
 """
 array_points = N_clouds(3,500,[[5.0, 5.0],[5.0, 0.0],[0.0, 5.0]],[[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]]])
+array_points2 = N_clouds(3,500,[[2.0, 2.0],[2.0, 0.0],[0.0, 2.0]],[[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]]])
 
 def k_means(k: int, points: np.ndarray):
     rand = []
@@ -86,11 +87,17 @@ if __name__ == "__main__":
     print("helo")
     label, centroids = k_means(3, array_points)
     print(centroids)
+    plt.scatter(array_points[:, 0], array_points[:, 1], c=label, cmap='tab10', s=50)
+    """
+    no k-means soes not alsways provide the same result for this data set
+    """
     
-    for i in array_points:
-      plt.scatter(i[0],i[1])
-    plt.scatter(centroids[:,0],centroids[:,1],marker="x",color="red")
-    #plt.scatter(label[:, 0], label[:, 1], marker="x", color="green")
+    
+    #plt.scatter(array_points2[:, 0], array_points2[:, 1], c=label, cmap='tab10', s=50)
+    """
+    the clouds overlap more here, so the k-means algorithm has more problems to cluster them correctly
+    """
+    
     plt.xlabel("x")
     plt.ylabel("y")
     plt.title("Cluster")
