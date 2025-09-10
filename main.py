@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import src.kmeans as km
 import src.sse as sse
 import src.k_iterate as ki
+from src.k_iterate import k_means_iterative
 
 
 def run():
@@ -16,12 +17,7 @@ def run():
     array_points2 = gen.N_clouds(3, 500, [[2.0, 2.0], [2.0, 0.0], [0.0, 2.0]], [[[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]]])
     
     ki.k_means_iterative(10, array_points2)
-    
-    """
-    the SSE desreases with increasing k
-    
-    both datasets have very similar courves
-    """
+
     
     label, centroids = km.k_means(4, array_points2)
 
@@ -36,26 +32,30 @@ def run():
 
     plt.scatter(array_points2[:, 0], array_points2[:, 1], c=label, cmap='tab10', s=50)
 
-    """
-    no k-means does not always provide the same result for this data set
-    """
-
     # plt.scatter(array_points2[:, 0], array_points2[:, 1], c=label, cmap='tab10', s=50)
-    """
-    the clouds overlap more here, so the k-means algorithm has more problems to cluster them correctly
-    """
 
     """
     Labelling the cluster visualisation
     """
     plt.xlabel("x-Axis")
     plt.ylabel("y-Axis")
+    ki.k_means_iterative(10, array_points2)
     plt.title("Cluster")
     plt.show()
 
     pass
 
-def run_n_times(N: int):
+"""
+Run N times and return the plot with the lowest SSE
+N = number of times to run the k-means algorithm
+k = number of clusters
+
+Within the for loop we run the k-means algorithm and calculate the SSE for each run.
+We then save it in a dictionary and add it to a list.
+At the end we sort the list and return the lowest SSE result.
+From the lowest SSE result we can get the points & build the cluster visualisation.
+"""
+def run_n_times(N: int = 10, k: int = 10):
     sse_list = []
     all_results = []
     # array => kmeans[]
@@ -67,11 +67,10 @@ def run_n_times(N: int):
     for i in range(N):
         result = {
             "sse": 0.0,
-            "kmeans": 0.0,
             "label": 0.0
         }
 
-        label, centroids, points = km.k_means(10, array_points)
+        label, centroids = km.k_means(k, array_points)
 
         # build clusters: list of arrays, one per cluster
         clusters = [array_points[label == i] for i in range(len(centroids))]
@@ -79,23 +78,21 @@ def run_n_times(N: int):
         sse_value = sse.sse(centroids, clusters)
 
         result["sse"] = float(sse_value)
-        result["kmeans"] = points
         result["label"] = label
         all_results.append(result)
 
         sse_list.append(sse_value)
 
     all_results = sorted(all_results, key=lambda x: x["sse"])
-    print("All results sorted by SSE:", all_results)
     print("Lowest SSE result:", all_results[0])
 
     plt.scatter(array_points[:, 0], array_points[:, 1], c=all_results[0]["label"], cmap='tab10', s=50)
 
     plt.xlabel("x-Axis")
     plt.ylabel("y-Axis")
-    plt.title("Cluster")
+    plt.title("Smallest SSE Cluster (" + str(all_results[0]["sse"]) + ")")
     plt.show()
 
 
 if __name__ == "__main__":
-    run_n_times(10)
+    run()
