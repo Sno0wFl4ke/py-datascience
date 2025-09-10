@@ -28,7 +28,7 @@ def N_clouds(N: int, n:int, mu=[], covariance=[]):
     all_points = []
     for i in range(N):
         all_points.append(generate_data(mu[i],covariance[i], n))
-    return all_points
+    return np.vstack(all_points)
 
 """
 Creates 3 clouds with 500 points each at random positions at the coordinates (5,5), (5,0) and (0,5). The covariance matrices are the same for each cloud.
@@ -41,29 +41,32 @@ def k_means(k: int, points: np.ndarray):
         x = np.random.randint(0,len(points))
         rand.append(x)
     centroids = points[rand]
-    centerpoints = []
-    old_centerpoints = []
-    new_centroids = []
-    centerpoints = np.array([])
-    old_centerpoints = np.array([])
-    while distance(centroids, new_centroids) > 0.1 or old_centerpoints == []:
-        if old_centerpoints != []:
+    
+    
+    new_centroids = np.zeros_like(centroids)
+    centerpoints = np.zeros_like(points)
+    
+    while np.linalg.norm(new_centroids - centroids) > 0.1 or np.all(centerpoints == 0):
+        if not np.all(centerpoints == 0):
             new_centroids = centroids
             zähl = 0
             for i in centroids:
-                mask = points == i
+                mask = centerpoints == zähl
                 centroid = np.mean(points[mask], axis=0)
                 new_centroids[zähl] = centroid
                 zähl += 1
+        i = 0
         for point in points:
-            i = 0
+            
             smalldist = None
+            zähl2 = 0
             for centroid in centroids:
                 dist = np.sqrt((point[0] - centroid[0]) ** 2 + (point[1] - centroid[1]) ** 2)
 
-                if dist < smalldist or smalldist is None:
+                if smalldist is None or dist < smalldist:
                     smalldist = dist
-                    centerpoints[i] = centroid
+                    centerpoints[i] = zähl2
+                zähl2 += 1
             i += 1
 
     return centerpoints
@@ -80,9 +83,10 @@ def distance(a: np.ndarray, b: np.ndarray) -> float:
     return np.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
     
 if __name__ == "__main__":
+    print("helo")
     print(k_means(3, array_points))
     for i in array_points:
-        plt.scatter(i[:,0],i[:,1])
+        plt.scatter(i[0],i[1])
     plt.xlabel("x")
     plt.ylabel("y")
     plt.title("Cluster")
