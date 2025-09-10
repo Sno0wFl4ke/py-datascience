@@ -1,3 +1,5 @@
+import numpy as np
+
 import generator as gen
 import matplotlib.pyplot as plt
 import src.kmeans as km
@@ -55,6 +57,7 @@ def run():
 
 def run_n_times(N: int):
     sse_list = []
+    all_results = []
     # array => kmeans[]
     # map => sse_time + array[i]
     # ==> Check -> lowest SSE => print
@@ -62,17 +65,37 @@ def run_n_times(N: int):
                           [[[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]]])
 
     for i in range(N):
+        result = {
+            "sse": 0.0,
+            "kmeans": 0.0,
+            "label": 0.0
+        }
+
         label, centroids, points = km.k_means(10, array_points)
 
         # build clusters: list of arrays, one per cluster
         clusters = [array_points[label == i] for i in range(len(centroids))]
 
         sse_value = sse.sse(centroids, clusters)
-        print(sse_value)
+
+        result["sse"] = float(sse_value)
+        result["kmeans"] = points
+        result["label"] = label
+        all_results.append(result)
+
         sse_list.append(sse_value)
 
+    all_results = sorted(all_results, key=lambda x: x["sse"])
+    print("All results sorted by SSE:", all_results)
+    print("Lowest SSE result:", all_results[0])
 
-    print("Lowest SSE score:", min(sse_list))
+    plt.scatter(array_points[:, 0], array_points[:, 1], c=all_results[0]["label"], cmap='tab10', s=50)
+
+    plt.xlabel("x-Axis")
+    plt.ylabel("y-Axis")
+    plt.title("Cluster")
+    plt.show()
+
 
 if __name__ == "__main__":
     run_n_times(10)
