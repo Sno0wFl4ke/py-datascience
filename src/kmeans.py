@@ -1,15 +1,14 @@
 import numpy as np
 from . import utils
 
-def k_means(k: int, points: np.ndarray, starpointst=None):
-    if starpointst is not None:
-        centroids = starpointst
-    else:
-        rand = []
-        for i in range(k):
-            x = np.random.randint(0,len(points))
-            rand.append(x)
-        centroids = points[rand]
+def k_means(k: int, points: np.ndarray):
+    
+    
+    rand = []
+    for i in range(k):
+        x = np.random.randint(0,len(points))
+        rand.append(x)
+    centroids = points[rand]
     
     
     new_centroids = np.zeros_like(centroids)
@@ -41,4 +40,4 @@ def k_means(k: int, points: np.ndarray, starpointst=None):
                 counter2 += 1
             i += 1
 
-    return centerpoints, centroids, points[rand]
+    return centerpoints, centroids
