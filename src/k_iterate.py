@@ -19,6 +19,6 @@ def k_means_iterative(k_max:int ,points: np.ndarray):
     plt.plot(x, SSEs, marker='o', linestyle='-', color='blue')
     plt.xlabel('k')
     plt.ylabel('SSE')
-    plt.title('SSE zu K')
+    plt.title('SSE to k')
     plt.grid(True)
     plt.show()

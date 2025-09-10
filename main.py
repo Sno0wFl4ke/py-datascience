@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import src.kmeans as km
 import src.sse as sse
 import src.k_iterate as ki
+from src.k_iterate import k_means_iterative
 
 
 def run():
@@ -16,12 +17,7 @@ def run():
     array_points2 = gen.N_clouds(3, 500, [[2.0, 2.0], [2.0, 0.0], [0.0, 2.0]], [[[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]]])
     
     ki.k_means_iterative(10, array_points2)
-    
-    """
-    the SSE desreases with increasing k
-    
-    both datasets have very similar courves
-    """
+
     
     label, centroids = km.k_means(4, array_points2)
 
@@ -36,20 +32,14 @@ def run():
 
     plt.scatter(array_points2[:, 0], array_points2[:, 1], c=label, cmap='tab10', s=50)
 
-    """
-    no k-means does not always provide the same result for this data set
-    """
-
     # plt.scatter(array_points2[:, 0], array_points2[:, 1], c=label, cmap='tab10', s=50)
-    """
-    the clouds overlap more here, so the k-means algorithm has more problems to cluster them correctly
-    """
 
     """
     Labelling the cluster visualisation
     """
     plt.xlabel("x-Axis")
     plt.ylabel("y-Axis")
+    ki.k_means_iterative(10, array_points2)
     plt.title("Cluster")
     plt.show()
 
@@ -95,4 +85,4 @@ def run_n_times(N: int = 10, k: int = 10):
 
 
 if __name__ == "__main__":
-    run_n_times(10, 10)
+    run()
