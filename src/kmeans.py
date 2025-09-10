@@ -41,7 +41,8 @@ def k_means(k: int, points: np.ndarray):
         x = np.random.randint(0,len(points))
         rand.append(x)
     centroids = points[rand]
-<<<<<<< HEAD
+    centerpoints = []
+    old_centerpoints = []
     new_centroids = []
     centerpoints = np.array([])
     old_centerpoints = np.array([])
@@ -58,26 +59,16 @@ def k_means(k: int, points: np.ndarray):
             i = 0
             smalldist = None
             for centroid in centroids:
-                dist = np.sqrt((point[0]-centroid[0])**2 + (point[1]-centroid[1])**2)
-                
+                dist = np.sqrt((point[0] - centroid[0]) ** 2 + (point[1] - centroid[1]) ** 2)
+
                 if dist < smalldist or smalldist is None:
                     smalldist = dist
                     centerpoints[i] = centroid
             i += 1
+
     return centerpoints
-        
-=======
-    centerpoints = []
-    old_centerpoints = []
-    for point in points:
-        i = 0
-        for centroid in centroids:
-            dist = np.sqrt((point[0]-centroid[0])**2 + (point[1]-centroid[1])**2)
-            
-            if dist < smalldist or smalldist is None:
-                smalldist = dist
-                centerpoints[i] = centroid
-        i += 1
+
+
 
 """
 This functions calculates the Euclidean distance between two points.
@@ -85,7 +76,6 @@ a: 1D array_like, shape (N,)
 b: 1D array_like, shape (N,)
 """
 
->>>>>>> 9093cbea9a5274185cfe60c81df94b5598dca986
 def distance(a: np.ndarray, b: np.ndarray) -> float:
     return np.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
     
