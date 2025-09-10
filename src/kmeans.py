@@ -1,40 +1,9 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
-"""
-This function generates N random points with the given mean and covariance.
-Similar to the gaussian distribution.
-Math formula in TeX: p(x) = \frac{1}{\sigma\sqrt{2\pi}}exp(-\frac{(x-\mu)^2}{2\sigma^2})
-"""
-def generate_data(my=np.array([0.0, 0.0]), covariance=np.array([[1.0, 0.0], [0.0, 1.0]]), n=None) -> np.ndarray:
-    # μ = mean, Σ = covariance
-    mean = my  # n length 1D array_like /
-    cov = covariance  # (N, N) array_like 2D /
-    size = n  # int or tuple of ints, optional
-    check_valid = 'warn'  # 'warn', 'raise', or 'ignore', optional
-    tol = 1e-8  # float, optional
-    #print(np.random.multivariate_normal(mean, cov, size=size, check_valid=check_valid, tol=tol))
-    return np.random.multivariate_normal(mean, cov, size=size, check_valid=check_valid, tol=tol)
-
-
-"""
-This function generates N random clouds of points with the given mean and covariance.
-N: number of clouds
-n: number of points per cloud
-mu μ: list of mean vectors
-covariance: list of covariance matrices
-"""
-def N_clouds(N: int, n:int, mu=[], covariance=[]):
-    all_points = []
-    for i in range(N):
-        all_points.append(generate_data(mu[i],covariance[i], n))
-    return np.vstack(all_points)
+from . import utils
 
 """
 Creates 3 clouds with 500 points each at random positions at the coordinates (5,5), (5,0) and (0,5). The covariance matrices are the same for each cloud.
 """
-array_points = N_clouds(3,500,[[5.0, 5.0],[5.0, 0.0],[0.0, 5.0]],[[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]]])
-array_points2 = N_clouds(3,500,[[2.0, 2.0],[2.0, 0.0],[0.0, 2.0]],[[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]],[[1.0, 0.0], [0.0, 1.0]]])
 
 def k_means(k: int, points: np.ndarray):
     rand = []
@@ -50,55 +19,24 @@ def k_means(k: int, points: np.ndarray):
     while np.linalg.norm(new_centroids - centroids) > 0.1 or np.all(centerpoints == 0):
         if not np.all(centerpoints == 0):
             new_centroids = centroids
-            zähl = 0
+            counter = 0
             for i in centroids:
-                mask = centerpoints == zähl
+                mask = centerpoints == counter
                 centroid = np.mean(points[mask], axis=0)
-                new_centroids[zähl] = centroid
-                zähl += 1
+                new_centroids[counter] = centroid
+                counter += 1
         i = 0
         for point in points:
             
             smalldist = None
-            zähl2 = 0
+            counter2 = 0
             for centroid in centroids:
-                dist = np.sqrt((point[0] - centroid[0]) ** 2 + (point[1] - centroid[1]) ** 2)
+                dist = utils.distance(point, centroid)
 
                 if smalldist is None or dist < smalldist:
                     smalldist = dist
-                    centerpoints[i] = zähl2
-                zähl2 += 1
+                    centerpoints[i] = counter2
+                counter2 += 1
             i += 1
 
     return centerpoints, centroids
-
-
-
-"""
-This functions calculates the Euclidean distance between two points.
-a: 1D array_like, shape (N,)
-b: 1D array_like, shape (N,)
-"""
-
-def distance(a: np.ndarray, b: np.ndarray) -> float:
-    return np.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
-    
-if __name__ == "__main__":
-    print("helo")
-    label, centroids = k_means(3, array_points)
-    print(centroids)
-    plt.scatter(array_points[:, 0], array_points[:, 1], c=label, cmap='tab10', s=50)
-    """
-    no k-means soes not alsways provide the same result for this data set
-    """
-    
-    
-    #plt.scatter(array_points2[:, 0], array_points2[:, 1], c=label, cmap='tab10', s=50)
-    """
-    the clouds overlap more here, so the k-means algorithm has more problems to cluster them correctly
-    """
-    
-    plt.xlabel("x")
-    plt.ylabel("y")
-    plt.title("Cluster")
-    plt.show()

@@ -1,2 +1,37 @@
-import numpy as np
-import pandas as pd
+import generator as gen
+import matplotlib.pyplot as plt
+import src.kmeans as km
+
+
+def run():
+    """
+    array_points contains the points of the three clouds, N=3 = number of clouds, n = number of points per cloud, mu = mean, covariance = covariance
+    """
+    array_points = gen.N_clouds(3, 500, [[5.0, 5.0], [5.0, 0.0], [0.0, 5.0]],
+                                [[[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]]])
+    # array_points2 = gen.N_clouds(3, 500, [[2.0, 2.0], [2.0, 0.0], [0.0, 2.0]], [[[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]]])
+
+    label, centroids = km.k_means(3, array_points)
+    plt.scatter(array_points[:, 0], array_points[:, 1], c=label, cmap='tab10', s=50)
+    """
+    no k-means does not always provide the same result for this data set
+    """
+
+    # plt.scatter(array_points2[:, 0], array_points2[:, 1], c=label, cmap='tab10', s=50)
+    """
+    the clouds overlap more here, so the k-means algorithm has more problems to cluster them correctly
+    """
+
+    """
+    Labelling the cluster visualisation
+    """
+    plt.xlabel("x-Axis")
+    plt.ylabel("y-Axis")
+    plt.title("Cluster")
+    plt.show()
+
+    pass
+
+
+if __name__ == "__main__":
+    run()
