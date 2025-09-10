@@ -1,6 +1,7 @@
 import generator as gen
 import matplotlib.pyplot as plt
 import src.kmeans as km
+import src.sse as sse
 
 
 def run():
@@ -12,7 +13,18 @@ def run():
     # array_points2 = gen.N_clouds(3, 500, [[2.0, 2.0], [2.0, 0.0], [0.0, 2.0]], [[[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]]])
 
     label, centroids = km.k_means(3, array_points)
+
+    # build clusters: list of arrays, one per cluster
+    clusters = [array_points[label == i] for i in range(len(centroids))]
+
+    sse_value = sse.sse(centroids, clusters)
+
+    print("Centroids:", centroids)
+    print("Clusters:", clusters)
+    print("SSE:", sse_value)
+
     plt.scatter(array_points[:, 0], array_points[:, 1], c=label, cmap='tab10', s=50)
+
     """
     no k-means does not always provide the same result for this data set
     """
