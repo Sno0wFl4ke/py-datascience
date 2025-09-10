@@ -45,6 +45,16 @@ def run():
 
     pass
 
+"""
+Run N times and return the plot with the lowest SSE
+N = number of times to run the k-means algorithm
+k = number of clusters
+
+Within the for loop we run the k-means algorithm and calculate the SSE for each run.
+We then save it in a dictionary and add it to a list.
+At the end we sort the list and return the lowest SSE result.
+From the lowest SSE result we can get the points & build the cluster visualisation.
+"""
 def run_n_times(N: int = 10, k: int = 10):
     sse_list = []
     all_results = []
