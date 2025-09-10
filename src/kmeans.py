@@ -32,7 +32,8 @@ def k_means(k: int, points: np.ndarray):
     centerpoints = np.zeros(len(points), dtype=int)
     if k == 1:
         return centerpoints,np.mean(points, axis=0)
-    
+
+    # As long as the centroids do not change much, we continue to calculate the new centroids. (> 0.1)
     while np.linalg.norm(new_centroids - centroids) > 0.1 or np.all(centerpoints == 0):
         if not np.all(centerpoints == 0):
             new_centroids = centroids
@@ -45,12 +46,12 @@ def k_means(k: int, points: np.ndarray):
                 counter += 1
         i = 0
         for point in points:
-            
+            # smalldist: smallest distance between point and centroid
             smalldist = None
             counter2 = 0
             for centroid in centroids:
                 dist = utils.distance(point, centroid)
-
+                # Assign point to closest centroid
                 if smalldist is None or dist < smalldist:
                     smalldist = dist
                     centerpoints[i] = counter2
