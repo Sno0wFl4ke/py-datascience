@@ -44,7 +44,7 @@ def k_means(k: int, points: np.ndarray):
     
     
     new_centroids = np.zeros_like(centroids)
-    centerpoints = np.zeros_like(points)
+    centerpoints = np.zeros(len(points), dtype=int)
     
     while np.linalg.norm(new_centroids - centroids) > 0.1 or np.all(centerpoints == 0):
         if not np.all(centerpoints == 0):
@@ -69,7 +69,7 @@ def k_means(k: int, points: np.ndarray):
                 zähl2 += 1
             i += 1
 
-    return centerpoints
+    return centerpoints, centroids
 
 
 
@@ -84,9 +84,13 @@ def distance(a: np.ndarray, b: np.ndarray) -> float:
     
 if __name__ == "__main__":
     print("helo")
-    print(k_means(3, array_points))
+    label, centroids = k_means(3, array_points)
+    print(centroids)
+    
     for i in array_points:
-        plt.scatter(i[0],i[1])
+      plt.scatter(i[0],i[1])
+    plt.scatter(centroids[:,0],centroids[:,1],marker="x",color="red")
+    #plt.scatter(label[:, 0], label[:, 1], marker="x", color="green")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.title("Cluster")
