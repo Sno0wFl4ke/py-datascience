@@ -1,9 +1,26 @@
 import numpy as np
 from . import utils
 
+"""
+This function calculates the k-means clustering algorithm.
+k: number of clusters
+points: 2D array_like, shape (N, 2)
+
+First we randomly select k points from the points array.
+Then we calculate the centroids as the mean of the selected points.
+We then calculate the distance between each point and each centroid.
+We then assign each point to the closest centroid.
+We then calculate the new centroids as the mean of the points assigned to each centroid.
+We repeat the process until the centroids do not change much.  
+
+Result: 2D array_like, shape (N, ) and 2D array_like, shape (k, 2)
+centerpoints: 1D array_like, shape (N, ) => This means that each point is assigned to a cluster.
+centroids: 2D array_like, shape (k, 2)
+=> This means that each point is assigned to a cluster.
+"""
+
+
 def k_means(k: int, points: np.ndarray):
-    
-    
     rand = []
     for i in range(k):
         x = np.random.randint(0,len(points))

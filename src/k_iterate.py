@@ -5,6 +5,10 @@ import src.sse as sse
 
 """
 It runs k-means for different values of k (from 1 to k_max) and plots the SSE (sum of squared errors) for each k.
+k_max: int, maximum number of clusters
+points: 2D array_like, shape (N, 2)
+
+=> Result plot: SSE to k
 """
 
 def k_means_iterative(k_max:int ,points: np.ndarray):
