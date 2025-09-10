@@ -55,7 +55,7 @@ def run():
 
     pass
 
-def run_n_times(N: int):
+def run_n_times(N: int = 10, k: int = 10):
     sse_list = []
     all_results = []
     # array => kmeans[]
@@ -71,7 +71,7 @@ def run_n_times(N: int):
             "label": 0.0
         }
 
-        label, centroids, points = km.k_means(10, array_points)
+        label, centroids, points = km.k_means(k, array_points)
 
         # build clusters: list of arrays, one per cluster
         clusters = [array_points[label == i] for i in range(len(centroids))]
@@ -93,9 +93,9 @@ def run_n_times(N: int):
 
     plt.xlabel("x-Axis")
     plt.ylabel("y-Axis")
-    plt.title("Cluster")
+    plt.title("Smallest SSE Cluster (" + str(all_results[0]["sse"]) + ")")
     plt.show()
 
 
 if __name__ == "__main__":
-    run_n_times(10)
+    run_n_times(10, 10)
