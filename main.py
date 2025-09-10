@@ -53,6 +53,25 @@ def run():
 
     pass
 
+def run_n_times(N: int):
+    sse_list = []
+
+    for i in range(N):
+        points = gen.N_clouds(3, 500, [[5.0, 5.0], [5.0, 0.0], [0.0, 5.0]], [[[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]], [[1.0, 0.0], [0.0, 1.0]]])
+
+        label, centroids = km.k_means(10, points)
+
+        # build clusters: list of arrays, one per cluster
+        clusters = [points[label == i] for i in range(len(centroids))]
+
+        sse_value = sse.sse(centroids, clusters)
+        print(sse_value)
+        sse_list.append(sse_value)
+
+
+    print("Lowest SSE score:", min(sse_list))
+    print("Highest SSE score:", max(sse_list))
+    print("Average SSE score:", sum(sse_list) / len(sse_list))
 
 if __name__ == "__main__":
-    run()
+    run_n_times(10)
